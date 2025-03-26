@@ -32,10 +32,12 @@ public class QuestionBankVO implements Serializable {
      * 描述
      */
     private String description;
+
     /**
      * 图片
      */
     private String picture;
+
     /**
      * 创建用户 id
      */
@@ -51,7 +53,6 @@ public class QuestionBankVO implements Serializable {
      */
     private Date updateTime;
 
-
     /**
      * 创建用户信息
      */
@@ -60,8 +61,7 @@ public class QuestionBankVO implements Serializable {
     /**
      * 题库里的题目列表（分页）
      */
-    Page<Question> questionPage;
-
+    Page<QuestionVO> questionPage;
 
     /**
      * 封装类转对象
@@ -75,7 +75,6 @@ public class QuestionBankVO implements Serializable {
         }
         QuestionBank questionBank = new QuestionBank();
         BeanUtils.copyProperties(questionBankVO, questionBank);
-
         return questionBank;
     }
 
@@ -91,6 +90,6 @@ public class QuestionBankVO implements Serializable {
         }
         QuestionBankVO questionBankVO = new QuestionBankVO();
         BeanUtils.copyProperties(questionBank, questionBankVO);
-           return questionBankVO;
+        return questionBankVO;
     }
 }
