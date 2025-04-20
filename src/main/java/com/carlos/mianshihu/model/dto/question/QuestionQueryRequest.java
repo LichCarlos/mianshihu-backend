@@ -7,12 +7,6 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * 查询题目请求
- *
- * @author <a href="https://github.com/licarlos">程序员鱼皮</a>
- * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
- */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class QuestionQueryRequest extends PageRequest implements Serializable {
@@ -48,11 +42,6 @@ public class QuestionQueryRequest extends PageRequest implements Serializable {
     private List<String> tags;
 
     /**
-     * 创建用户 id
-     */
-    private Long userId;
-
-    /**
      * 推荐答案
      */
     private String answer;
@@ -61,5 +50,11 @@ public class QuestionQueryRequest extends PageRequest implements Serializable {
      * 题库 id
      */
     private Long questionBankId;
+
+    /**
+     * 创建用户 id
+     */
+    private Long userId;
+
     private static final long serialVersionUID = 1L;
 }

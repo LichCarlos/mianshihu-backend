@@ -1,8 +1,7 @@
 package com.carlos.mianshihu.controller;
 
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.carlos.mianshihu.annotation.AuthCheck;
 import com.carlos.mianshihu.common.BaseResponse;
@@ -16,11 +15,10 @@ import com.carlos.mianshihu.model.dto.question.QuestionAddRequest;
 import com.carlos.mianshihu.model.dto.question.QuestionEditRequest;
 import com.carlos.mianshihu.model.dto.question.QuestionQueryRequest;
 import com.carlos.mianshihu.model.dto.question.QuestionUpdateRequest;
+import com.carlos.mianshihu.model.dto.question.*;
 import com.carlos.mianshihu.model.entity.Question;
-import com.carlos.mianshihu.model.entity.QuestionBankQuestion;
 import com.carlos.mianshihu.model.entity.User;
 import com.carlos.mianshihu.model.vo.QuestionVO;
-import com.carlos.mianshihu.service.QuestionBankService;
 import com.carlos.mianshihu.service.QuestionService;
 import com.carlos.mianshihu.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,8 +32,6 @@ import java.util.List;
 /**
  * 题目接口
  *
- * @author <a href="https://github.com/licarlos">程序员鱼皮</a>
- * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
  */
 @RestController
 @RequestMapping("/question")
@@ -255,4 +251,33 @@ public class QuestionController {
     }
 
     // endregion
+    @PostMapping("/delete/batch")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> batchDeleteQuestions(@RequestBody QuestionBatchDeleteRequest questionBatchDeleteRequest) {
+        ThrowUtils.throwIf(questionBatchDeleteRequest == null, ErrorCode.PARAMS_ERROR);
+        questionService.batchDeleteQuestions(questionBatchDeleteRequest.getQuestionIdList());
+        return ResultUtils.success(true);
+    }
+    /**
+     * AI 生成题目（仅管理员可用）
+     *
+     * @param questionAIGenerateRequest 请求参数
+     * @param request HTTP 请求
+     * @return 是否生成成功
+     */
+    @PostMapping("/ai/generate/question")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> aiGenerateQuestions(@RequestBody QuestionAIGenerateRequest questionAIGenerateRequest, HttpServletRequest request) {
+        String questionType = questionAIGenerateRequest.getQuestionType();
+        int number = questionAIGenerateRequest.getNumber();
+        // 校验参数
+        ThrowUtils.throwIf(StrUtil.isBlank(questionType), ErrorCode.PARAMS_ERROR, "题目类型不能为空");
+        ThrowUtils.throwIf(number <= 0, ErrorCode.PARAMS_ERROR, "题目数量必须大于 0");
+        // 获取当前登录用户
+        User loginUser = userService.getLoginUser(request);
+        // 调用 AI 生成题目服务
+        questionService.aiGenerateQuestions(questionType, number, loginUser);
+        // 返回结果
+        return ResultUtils.success(true);
+    }
 }

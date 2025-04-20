@@ -4,16 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.carlos.mianshihu.model.dto.question.QuestionQueryRequest;
+import com.carlos.mianshihu.model.dto.question.QuestionUpdateRequest;
 import com.carlos.mianshihu.model.entity.Question;
+import com.carlos.mianshihu.model.entity.User;
 import com.carlos.mianshihu.model.vo.QuestionVO;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 题目服务
  *
- * @author <a href="https://github.com/licarlos">程序员鱼皮</a>
- * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
  */
 public interface QuestionService extends IService<Question> {
 
@@ -51,5 +52,26 @@ public interface QuestionService extends IService<Question> {
      */
     Page<QuestionVO> getQuestionVOPage(Page<Question> questionPage, HttpServletRequest request);
 
+    /**
+     * 分页获取题目列表
+     * @param questionQueryRequest
+     * @return
+     */
     Page<Question> listQuestionByPage(QuestionQueryRequest questionQueryRequest);
+
+    /**
+     *批量删初
+     */
+
+    void batchDeleteQuestions(List<Long> questionIdList);
+
+
+    /**
+     * AI 生成题目
+     * @param questionType 题目类型，比如 Java
+     * @param number 题目数量，比如 10
+     * @param user 创建人
+     * @return ture / false
+     */
+    boolean aiGenerateQuestions(String questionType, int number, User user);
 }

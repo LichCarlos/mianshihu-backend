@@ -1,12 +1,16 @@
 package com.carlos.mianshihu.model.dto.question;
-
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
-
 @Data
-public class QuestionAddRequest implements Serializable {
+/**
+ * 批量删除题目请求
+
+ */
+
+public class QuestionBatchDeleteRequest {
+
 
     /**
      * 标题
@@ -14,19 +18,10 @@ public class QuestionAddRequest implements Serializable {
     private String title;
 
     /**
-     * 内容
+     * 题目id列表
      */
-    private String content;
 
-    /**
-     * 标签列表
-     */
-    private List<String> tags;
-
-    /**
-     * 推荐答案
-     */
-    private String answer;
+    private List<Long> questionIdList;
 
     private static final long serialVersionUID = 1L;
 }

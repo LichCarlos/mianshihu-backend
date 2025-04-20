@@ -10,12 +10,7 @@ import com.carlos.mianshihu.config.WxOpenConfig;
 import com.carlos.mianshihu.constant.UserConstant;
 import com.carlos.mianshihu.exception.BusinessException;
 import com.carlos.mianshihu.exception.ThrowUtils;
-import com.carlos.mianshihu.model.dto.user.UserAddRequest;
-import com.carlos.mianshihu.model.dto.user.UserLoginRequest;
-import com.carlos.mianshihu.model.dto.user.UserQueryRequest;
-import com.carlos.mianshihu.model.dto.user.UserRegisterRequest;
-import com.carlos.mianshihu.model.dto.user.UserUpdateMyRequest;
-import com.carlos.mianshihu.model.dto.user.UserUpdateRequest;
+import com.carlos.mianshihu.model.dto.user.*;
 import com.carlos.mianshihu.model.entity.User;
 import com.carlos.mianshihu.model.vo.LoginUserVO;
 import com.carlos.mianshihu.model.vo.UserVO;
@@ -45,8 +40,6 @@ import static com.carlos.mianshihu.service.impl.UserServiceImpl.SALT;
 /**
  * 用户接口
  *
- * @author <a href="https://github.com/licarlos">程序员鱼皮</a>
- * @from <a href="https://carlos.icu">编程导航知识星球</a>
  */
 @RestController
 @RequestMapping("/user")
@@ -199,6 +192,27 @@ public class UserController {
     }
 
     /**
+     * 编辑用户
+     *
+     * @param userEditRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/edit")
+    public BaseResponse<Boolean> editUser(@RequestBody UserEditRequest userEditRequest,
+                                            HttpServletRequest request) {
+        if (userEditRequest == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User loginUser = userService.getLoginUser(request);
+        User user = new User();
+        BeanUtils.copyProperties(userEditRequest, user);
+        user.setId(loginUser.getId());
+        boolean result = userService.updateById(user);
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
+        return ResultUtils.success(true);
+    }
+    /**
      * 更新用户
      *
      * @param userUpdateRequest
@@ -316,5 +330,32 @@ public class UserController {
         boolean result = userService.updateById(user);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(true);
+    }
+    /**
+     * 添加用户签到记录
+     *
+     * @param request
+     * @return 当前是否已签到成功
+     */
+    @PostMapping("/add/sign_in")
+    public BaseResponse<Boolean> addUserSignIn(HttpServletRequest request) {
+        // 必须要登录才能签到
+        User loginUser = userService.getLoginUser(request);
+        boolean result = userService.addUserSignIn(loginUser.getId());
+        return ResultUtils.success(result);
+    }
+    /**
+     * 获取用户签到记录
+     *
+     * @param year    年份（为空表示当前年份）
+     * @param request
+     * @return 签到记录映射
+     */
+    @GetMapping("/get/sign_in")
+    public BaseResponse<List<Integer>> getUserSignInRecord(Integer year, HttpServletRequest request) {
+        // 必须要登录才能获取
+        User loginUser = userService.getLoginUser(request);
+        List<Integer> userSignInRecord = userService.getUserSignInRecord(loginUser.getId(), year);
+        return ResultUtils.success(userSignInRecord);
     }
 }

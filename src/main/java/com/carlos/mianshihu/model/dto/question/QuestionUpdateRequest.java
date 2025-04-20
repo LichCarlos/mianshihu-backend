@@ -8,8 +8,6 @@ import java.util.List;
 /**
  * 更新题目请求
  *
- * @author <a href="https://github.com/licarlos">程序员鱼皮</a>
- * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
  */
 @Data
 public class QuestionUpdateRequest implements Serializable {
@@ -33,6 +31,7 @@ public class QuestionUpdateRequest implements Serializable {
      * 标签列表
      */
     private List<String> tags;
+
     /**
      * 推荐答案
      */
