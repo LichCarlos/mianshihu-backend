@@ -6,7 +6,6 @@ import java.util.List;
 @Data
 /**
  * 批量删除题目请求
-
  */
 
 public class QuestionBatchDeleteRequest {

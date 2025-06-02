@@ -8,11 +8,13 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import org.mybatis.spring.annotation.MapperScan;
 
 /**
  * 模拟面试
  * @TableName mock_interview
  */
+
 @TableName(value ="mock_interview")
 @Data
 public class MockInterview implements Serializable {

@@ -5,8 +5,6 @@ import com.carlos.mianshihu.common.ErrorCode;
 /**
  * 自定义异常类
  *
- * @author <a href="https://github.com/licarlos">程序员鱼皮</a>
- * @from <a href="https://carlos.icu">编程导航知识星球</a>
  */
 public class BusinessException extends RuntimeException {
 

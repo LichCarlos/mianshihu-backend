@@ -28,8 +28,7 @@ import java.util.List;
 /**
  * 题库题目关联接口
  *
- * @author <a href="https://github.com/licarlos">程序员鱼皮</a>
- * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
+ *
  */
 @RestController
 @RequestMapping("/questionBankQuestion")
